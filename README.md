@@ -1,5 +1,16 @@
 # pblab: PacBio HiFi analysis tools
 
+```text
+  .-----------------.         _     _       _
+  | o o o o o o o o |   _ __ | |__ | | __ _| |__
+  | o o o * o o o o |  | '_ \| '_ \| |/ _` | '_ \
+  | o o o o o o * o |  | |_) | |_) | | (_| | |_) |
+  | o * o o o o o o |  | .__/|_.__/|_|\__,_|_.__/
+  '-----------------'  |_|
+     |                   Minutes, not hours.
+     '--> HiFi reads ===> align ===> call ===> score
+```
+
 Fast tools for HiFi data analysis, tuned to work together: pbweave aligns, pbdv calls small variants, the SV caller calls structural variants, pbhappy and pbtruvari score calls against truth sets. All numbers are for one human genome: HG002 (PacBio Revio, SPRQ-Nx chemistry, public), 60 and 90 Gb of HiFi reads, GRCh38.
 
 pbdv, pbhappy and pbtruvari reimplement DeepVariant, hap.py (with RTG Tools vcfeval) and truvari. pblab is not affiliated with or endorsed by Google, Illumina, Real Time Genomics, NVIDIA or the authors of these tools; their names describe what is reimplemented or compared.
