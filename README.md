@@ -8,84 +8,100 @@
   | o * o o o o o o |  | .__/|_.__/|_|\__,_|_.__/
   '-----------------'  |_|
      |                   Minutes, not hours.
-     '--> HiFi reads ===> align ===> call ===> score
+     '--> HiFi => assemble => align => call => score
 ```
 
-Fast tools for HiFi data analysis, tuned to work together: pbweave aligns, pbdv calls small variants, the SV caller calls structural variants, pbhappy and pbtruvari score calls against truth sets. All numbers are for one human genome: HG002 (PacBio Revio, SPRQ-Nx chemistry, public), 60 and 90 Gb of HiFi reads, GRCh38.
+Fast tools for HiFi data analysis, tuned to work together: pbalign aligns, pbhifiasm assembles, pbdv calls small variants, pbhappy and pbtruvari score calls against truth sets; pbcall (experimental, not in the release yet) calls SNVs, indels and SVs. The human numbers are for HG002 (PacBio Revio, SPRQ-Nx chemistry, public), 60 and 90 Gb of HiFi reads, GRCh38; [Accuracy](docs/accuracy.md) adds HG003 as the held-out genome, and [pbalign](docs/pbalign.md#other-genomes) seven more species.
 
-pbdv, pbhappy and pbtruvari reimplement DeepVariant, hap.py (with RTG Tools vcfeval) and truvari. pblab is not affiliated with or endorsed by Google, Illumina, Real Time Genomics, NVIDIA or the authors of these tools; their names describe what is reimplemented or compared.
+pbhifiasm, pbdv, pbhappy and pbtruvari reimplement hifiasm, DeepVariant, hap.py (with RTG Tools vcfeval) and truvari. pblab is not affiliated with or endorsed by Google, Illumina, Real Time Genomics or the authors of these tools; their names describe what is reimplemented.
 
-## Tools
+## Fastest
 
-Fastest time per genome: one AMD EPYC 9755 CPU, 128 cores + SMT (256 vCPU); pbdv with one RTX PRO 6000.
+Time per genome on one AMD EPYC 9755 CPU, 128 cores + SMT (256 vCPU); pbcall and pbdv with one RTX PRO 6000.
 
-|              Tool              |                  Task                  |        Status       |   60 Gb   |   90 Gb   |
-| ------------------------------ | -------------------------------------- | ------------------- | --------- | --------- |
-| [pbweave](docs/pbweave.md)     | Alignment, unsorted BAM                | preview             | **21 s**  | **31 s**  |
-|                                | Alignment, sorted BAM + BAI            |                     | **29 s**  | **47 s**  |
-| [pbdv](docs/pbdv.md)           | Small-variant calling (+ RTX PRO 6000) | preview             | **30 s**  | **33 s**  |
-| [SV caller](docs/sv-caller.md) | Structural-variant calling             | Research Experiment | **19 s**  | **26 s**  |
-| [pbhappy](docs/pbhappy.md)     | Small-variant benchmarking             | preview             | **2.2 s** | **2.2 s** |
-| [pbtruvari](docs/pbtruvari.md) | SV benchmarking                        | preview             | **42 s**  | **39 s**  |
+| Tool                           | Task                        | Status       | 60 Gb        | 90 Gb        |
+| ------------------------------ | --------------------------- | ------------ | ------------ | ------------ |
+| [pbalign](docs/pbalign.md)     | Alignment, unsorted BAM     | preview      | **21 s**     | **32 s**     |
+|                                | Alignment, sorted BAM + BAI |              | **27 s**     | **40 s**     |
+| [pbhifiasm](docs/pbhifiasm.md) | Assembly, both haplotypes   | preview      | **2:12 min** | **4:18 min** |
+| [pbcall](docs/pbcall.md)       | SNV, indel and SV calling   | experimental | **48 s**     | **1:03 min** |
+| [pbdv](docs/pbdv.md)           | Small-variant calling       | preview      | **29 s**     | **33 s**     |
+| [pbhappy](docs/pbhappy.md)     | Small-variant benchmarking  | preview      | **12 s**     | **15 s**     |
+| [pbtruvari](docs/pbtruvari.md) | SV benchmarking             | preview      | **24 s**     | **24 s**     |
 
-## A genome in the cloud
+## Cheapest
 
-Reads to sorted BAM, small variants and SVs, one step after the other, on AWS HealthOmics instances. Compute only, on-demand prices, us-east-1 (price list 2026-09-11).
+A genome in the cloud: reads to sorted BAM, then the variants, one step after the other on AWS EC2 spot instances, us-east-1, 2026-11-25. Compute cost: the run of the tool itself at the spot price of the day; the whole instance (start, fetch from S3, upload to S3) is on the tool pages. The last three rows are the assembly route (workflow B of [Accuracy](docs/accuracy.md)): the assembly from the reads, its contigs on GRCh38 and the lift of the reads (one pbalign step, with the contig index), then pbcall with the lifted reads and the contigs; it needs no separate alignment. The steps after the assembly ran on one instance.
 
 **60 Gb**
 
-|         Step        |             Tool            |     Instance     |     Time     |    Cost   |
-| ------------------- | --------------------------- | ---------------- | ------------ | --------- |
-| Align + sort        | pbweave                     | omics.c.32xlarge | 30 s         | $0.06     |
-| Small variants      | pbdv                        | omics.g6.4xlarge | 2:45 min     | $0.08     |
-| Structural variants | SV caller                   | omics.c.32xlarge | 23 s         | $0.05     |
-| **Total**           |                             |                  | **3:38 min** | **$0.19** |
-| Old pipeline        | pbmm2, DeepVariant, sawfish | omics.c.32xlarge | 44:17 min    | $5.42     |
+| Step                                | Tool      | Instance          | Time     | Compute cost |
+| ----------------------------------- | --------- | ----------------- | -------- | ------------ |
+| Align + sort                        | pbalign   | m7a.16xlarge      | 59 s     | $0.015       |
+| SNVs, indels, SVs                   | pbcall    | m7a.16xlarge      | 3:19 min | $0.042       |
+| Small variants                      | pbdv      | g6.2xlarge (1 L4) | 5:42 min | $0.077       |
+| Assembly                            | pbhifiasm | m7a.16xlarge      | 6:14 min | $0.102       |
+| Contigs on GRCh38 + lift            | pbalign   | m7a.16xlarge      | 5:29 min | $0.085       |
+| SNVs, indels, SVs with the assembly | pbcall    | m7a.16xlarge      | 3:39 min | $0.057       |
 
 **90 Gb**
 
-|         Step        |             Tool            |     Instance     |     Time     |    Cost   |
-| ------------------- | --------------------------- | ---------------- | ------------ | --------- |
-| Align + sort        | pbweave                     | omics.c.32xlarge | 47 s         | $0.10     |
-| Small variants      | pbdv                        | omics.g6.4xlarge | 3:19 min     | $0.10     |
-| Structural variants | SV caller                   | omics.c.32xlarge | 31 s         | $0.06     |
-| **Total**           |                             |                  | **4:37 min** | **$0.26** |
-| Old pipeline        | pbmm2, DeepVariant, sawfish | omics.c.32xlarge | 55:31 min    | $6.80     |
+| Step                                | Tool      | Instance          | Time      | Compute cost |
+| ----------------------------------- | --------- | ----------------- | --------- | ------------ |
+| Align + sort                        | pbalign   | m7a.16xlarge      | 1:28 min  | $0.023       |
+| SNVs, indels, SVs                   | pbcall    | m7a.16xlarge      | 4:49 min  | $0.061       |
+| Small variants                      | pbdv      | g6.2xlarge (1 L4) | 7:00 min  | $0.096       |
+| Assembly                            | pbhifiasm | m7a.16xlarge      | 12:24 min | $0.204       |
+| Contigs on GRCh38 + lift            | pbalign   | m7a.16xlarge      | 9:25 min  | $0.118       |
+| SNVs, indels, SVs with the assembly | pbcall    | m7a.16xlarge      | 5:12 min  | $0.065       |
 
-The old pipeline: pbmm2 v26.2.99, DeepVariant 1.10.0 (CPU) and sawfish 2.2.1 on the same genome. Instances are emulated: [Method](docs/method.md).
+
+**Per workflow** (the sum of its steps above; workflows as in [Accuracy](docs/accuracy.md))
+
+| Workflow                               | 60 Gb                 | 90 Gb                 |
+| -------------------------------------- | --------------------- | --------------------- |
+| A: pbalign → pbcall                    | 4:18 min, **$0.057**  | 6:17 min, **$0.084**  |
+| B: pbhifiasm → contigs + lift → pbcall | 15:22 min, **$0.244** | 27:01 min, **$0.387** |
+| C: pbalign → pbdv                      | 6:41 min, **$0.092**  | 8:28 min, **$0.119**  |
+
+[Method](docs/method.md).
 
 ## Accuracy at a glance
 
-F1 of the whole pipeline. New: pbweave, then pbdv and the SV caller. Old: pbmm2, then DeepVariant and sawfish. Best in bold. Recall, precision, FN, FP and Parabricks: [Accuracy](docs/accuracy.md).
+F1 against the T2T-Q100 v1.1 truth of HG002 (small variants: pbhappy; SVs: pbtruvari). A: pbalign, then pbcall. B: pbhifiasm,
+the contigs on GRCh38, the lift, then pbcall with the assembly. C: pbalign, then pbdv. GIAB v4.2.1, aardvark, recall,
+precision, FN and FP: [Accuracy](docs/accuracy.md).
 
 **60 Gb**
 
-| Variants |     New     |     Old     |
-| -------- | ----------- | ----------- |
-| SNP      | 99.865%     | **99.866%** |
-| INDEL    | **98.749%** | 98.738%     |
-| SV       | **98.32%**  | 97.67%      |
+| Variants | A: pbcall | B: assembly + lift + pbcall | C: pbdv |
+| -------- | --------- | --------------------------- | ------- |
+| SNP      | 99.720%   | **99.835%**                 | 99.615% |
+| INDEL    | 97.807%   | **97.964%**                 | 95.548% |
+| SV       | 99.25%    | **99.57%**                  | –       |
 
 **90 Gb**
 
-| Variants |     New     |     Old     |
-| -------- | ----------- | ----------- |
-| SNP      | **99.924%** | **99.924%** |
-| INDEL    | **99.567%** | 99.561%     |
-| SV       | **98.57%**  | 97.89%      |
+| Variants | A: pbcall | B: assembly + lift + pbcall | C: pbdv |
+| -------- | --------- | --------------------------- | ------- |
+| SNP      | 99.797%   | **99.900%**                 | 99.717% |
+| INDEL    | 98.744%   | **98.864%**                 | 97.580% |
+| SV       | 99.48%    | **99.70%**                  | –       |
 
 ## More
 
-- Tools: [pbweave](docs/pbweave.md), [pbdv](docs/pbdv.md), [SV caller](docs/sv-caller.md), [pbhappy](docs/pbhappy.md), [pbtruvari](docs/pbtruvari.md)
+- Tools: [pbalign](docs/pbalign.md), [pbhifiasm](docs/pbhifiasm.md), [pbcall](docs/pbcall.md), [pbdv](docs/pbdv.md), [pbhappy](docs/pbhappy.md), [pbtruvari](docs/pbtruvari.md)
 - [Accuracy](docs/accuracy.md): all small-variant and SV results
 - [Reproduce](docs/reproduce.md): every file, version and command, and the checksums to compare with
 - [Method](docs/method.md): hardware, instances, runs
 
 ## Downloads
 
-Release [20261021](https://github.com/PacificBiosciences/pblab/releases/tag/20261021): pbweave, pbdv, pbhappy, pbtruvari and pbsamoa 26.3.99 for Linux x86-64 (glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver). The SV caller is a Research Experiment and not part of the release.
+**Next release** (in preparation): pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari, pbsamoa and pbphase, the builds that made the numbers of these pages ([Method](docs/method.md#versions)); not pbcall (experimental). Linux x86-64, glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver.
 
-|                 File                 |                              SHA-256                               |
+Release [20261021](https://github.com/PacificBiosciences/pblab/releases/tag/20261021): pbalign (as `pbweave`), pbdv, pbhappy, pbtruvari and pbsamoa 26.3.99 for Linux x86-64 (glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver); older builds than those of these pages.
+
+| File                                 | SHA-256                                                            |
 | ------------------------------------ | ------------------------------------------------------------------ |
 | `pblab-20261021-linux-x86_64.tar.xz` | `46cd78f3759a35be9c05d00035244cccda5300ea9df9f5f5ca749d179e9f0737` |
 

@@ -3,33 +3,51 @@
 ## Hardware
 
 - AMD EPYC 9755 server: 2 NUMA nodes of 128 cores each, SMT, local NVMe, NVIDIA RTX PRO 6000 Blackwell Server
-  Edition on NUMA node 1.
-- Intel Xeon Gold 5420+ server with NVIDIA L4 GPUs.
+  Edition GPUs.
+- AWS EC2, us-east-1: m7a.16xlarge (AMD EPYC 9R14, 64 cores, 256 GiB) for the CPU steps, g6.2xlarge (AMD EPYC 7R13,
+  8 vCPU, 32 GiB, 1 NVIDIA L4) for pbdv.
 
 ## Setups
 
-- **Fastest** (the Tools table): one whole NUMA node, 128 cores + SMT (256 vCPU), 256 threads, no memory
-  limit; each tool alone on that node, the other node idle. pbdv: all cores of the GPU's node with `-j 128`,
-  measured while the other node ran pbweave and pbmm2.
-- **omics.c.32xlarge** (128 vCPU): 64 cores with their SMT siblings on one NUMA node, memory on that node;
-  pbmm2, DeepVariant, sawfish and the SV caller under a 256 GiB hard memory limit.
-- **omics.g6.4xlarge** (16 vCPU, 1 L4): 8 cores + SMT on the L4 server, the L4 on the same NUMA node,
-  60 GiB hard memory limit.
-- Cloud CPUs can be slower than these servers; the times are of emulated instances.
+- **Fastest** (the README and the tool pages): one AMD EPYC 9755 CPU of the server (one NUMA node), 128 cores + SMT
+  (256 vCPU), no memory limit; one run per CPU at a time. Threads: `-j 256` for pbalign, pbhifiasm and pbcall,
+  `-j 128` for pbdv (with one RTX PRO 6000), `--threads 256` for pbhappy, 64 for pbtruvari. The inputs were read into
+  memory before the runs.
+- **Cheapest** (the README and the tool pages): real EC2 spot instances. The instance starts, fetches its inputs and
+  the tool from S3 (AWS CLI with its CRT transfer client), runs the tool with one thread per vCPU, uploads the output
+  to S3 and shuts down; inputs, outputs and scratch in memory (m7a.16xlarge) or on local disk (g6.2xlarge). pbalign,
+  pbhifiasm, pbcall and pbdv each ran on their own instances; the steps of the assembly route after the assembly
+  (contigs on GRCh38, the lift, pbcall with the assembly) ran on one instance, one after the other.
 
 ## Runs
 
-- One run per NUMA node at a time. Cloud setups: both nodes busy (pbweave to an unsorted BAM: the other node
-  idle).
-- New tools: 1 warmup, then 1 timed run; the timed run's output was scored. Old tools: 1 run.
-- Time is the wall clock of the whole command; peak memory is max RSS (SV caller on omics.c.32xlarge: not
-  shown, its memory limit counts page cache).
-- Cost = time x on-demand price per hour of the instance (AWS HealthOmics, us-east-1, price list 2026-09-11,
-  compute only).
-- Measured 2026-10-21. Versions: pbweave c748e35, pbdv 9a28b44, pbhappy 86114da, pbtruvari f64e269,
-  pbsamoa 191c09e, SV caller 759e689 (Research Experiment; all 26.3.99).
-- The release binaries are the measured ones, except pbdv and pbsamoa: these were rebuilt afterwards with a
-  clean version string (pbdv: its parent commit fe9793a differs only in a build symlink). Rebuilt, they give
-  byte-identical output: the same pbdv VCF and gVCF and the same read sets on both data sets.
+- pbalign, HG002 read alignment (Fastest): 1 warmup run, then 3 timed runs per row; the tables show the median.
+- pbhifiasm (Fastest): 1 warmup run, then 1 timed run; both gave the same contigs.
+- All other Fastest rows (contig alignment, lift, pbcall, pbdv, pbhappy, pbtruvari, the other genomes): one timed run
+  each, after the inputs were read into memory.
+- Cheapest: each instance starts cold. pbalign: the mean of 3 instances per data set; pbhifiasm, pbcall, pbdv and the
+  assembly route: one instance per data set.
+- Time is the wall clock of the tool's command; peak memory is max RSS. The tool pages also give the whole instance
+  of Cheapest, from launch to shutdown.
+- Compute cost = the time of the tool's run x the spot price per hour of the instance on the day of the run
+  (us-east-1), from the exact seconds; the tables round the time to whole seconds.
+- Accuracy: workflow C is the pbdv VCF of the Fastest run (RTX PRO 6000). The L4 VCF of Cheapest differs from it in
+  the last bits of floating point; its scores differ by at most 9 variants (pbhappy, aardvark GT).
+
+## Versions
+
+Measured 2026-11-25 and 2026-11-26. The [next release](../README.md#downloads) ships these builds:
+
+| Tool      | Commit  | Note                                                                                                               |
+| --------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| pbalign   | 4e722c5 | the other genomes, Cheapest and the BAMs of pbcall and pbdv ran ed11c12, the version before, with the same records |
+| pbhifiasm | 863893b | the CPU build; HG003 ran another CPU build of the same commit                                                      |
+| pbdv      | eb4c1ca | Cheapest ran another build of the same commit                                                                      |
+| pbhappy   | 92cce05 |                                                                                                                    |
+| pbtruvari | 1a4cf4b |                                                                                                                    |
+| pbsamoa   | e0b0f08 |                                                                                                                    |
+| pbcall    | e3f414c | experimental, not in the release; with its panel (221 samples, without HG002, HG003, HG004)                        |
+
+All report version 26.3.99. Other tools: bcftools 1.23, aardvark v1.2.0 ([Reproduce](reproduce.md#3-software)).
 
 [Back to the overview](../README.md)
