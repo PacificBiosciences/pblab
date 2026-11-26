@@ -42,7 +42,7 @@ tabix -p bed GRCh38_HG2-T2TQ100-V1.1_smvar.benchmark.bed.gz
 
 | Tool                                                  | Version           | Where                                                                                                                                                                                                                                               |
 | ----------------------------------------------------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari, pbsamoa | 26.3.99           | release [20261126](https://github.com/PacificBiosciences/pblab/releases/tag/20261126): `pblab-20261126-linux-x86_64.tar.xz`, sha256 `1ec550be3ee43d71233dddd33b66b692af9fd3dd5be91d09ba7603bb21280f56`; the commits in [Method](method.md#versions) |
+| pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari, pbsamoa | 26.3.99           | release [20261126](https://github.com/PacificBiosciences/pblab/releases/tag/20261126): `pblab-20261126-linux-x86_64.tar.xz`, sha256 `92cee909152146f88acf3c8bf229c8f4935e409d59313d11e350108441c3e3a4`; the commits in [Method](method.md#versions) |
 | pbcall                                                | 26.3.99 (e3f414c) | experimental, not part of the release; with its panel `pbcall.panel`                                                                                                                                                                                |
 | bcftools                                              | 1.23              | for the scoring steps (`--write-index` needs 1.18 or newer)                                                                                                                                                                                         |
 | bedtools                                              | any recent        | for the A-or-B-only check                                                                                                                                                                                                                           |
@@ -94,7 +94,7 @@ pbalign align -j 256 --sort GRCh38.pai hg002.90G.reads.bam aligned.bam          
 pbcall call -j 256 --haploid-xy --panel pbcall.panel $REF aligned.bam hg002.vcf.gz  # SNVs, indels, SVs
 
 # B: pbhifiasm -> contigs + lift -> pbcall
-pbhifiasm asm -j 256 -o asm hg002.90G.reads.bam                                     # asm.bp.hap{1,2}.p_ctg.gfa
+pbhifiasm -j 256 -o asm hg002.90G.reads.bam                                         # asm.bp.hap{1,2}.p_ctg.gfa
 for h in hap1 hap2; do
     awk -F'\t' '$1 == "S" {print ">"$2; print $3}' asm.bp.$h.p_ctg.gfa > $h.fa
     pbalign align -j 256 --preset CONTIG --sort GRCh38.contig.pai $h.fa $h.bam

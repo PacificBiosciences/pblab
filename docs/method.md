@@ -40,8 +40,8 @@ Measured 2026-11-25 and 2026-11-26. Release [20261126](../README.md#downloads) s
 
 | Tool      | Commit  | Note                                                                                                               |
 | --------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| pbalign   | 4e722c5 | the other genomes, Cheapest and the BAMs of pbcall and pbdv ran ed11c12, the version before, with the same records |
-| pbhifiasm | 863893b | the CPU build; HG003 ran another CPU build of the same commit                                                      |
+| pbalign   | beab3d9 | the other genomes, Cheapest and the BAMs of pbcall and pbdv ran ed11c12, the version before, with the same records |
+| pbhifiasm | a0fc035 | the CPU build                                                                                                      |
 | pbdv      | eb4c1ca | Cheapest ran another build of the same commit                                                                      |
 | pbhappy   | 92cce05 |                                                                                                                    |
 | pbtruvari | 1a4cf4b |                                                                                                                    |

@@ -127,7 +127,7 @@ with FN + FP bases in brackets. The "Small" columns are GT. pbdv calls no SVs, s
 
 HG003, the father of HG002 (PacBio Revio, SPRQ chemistry, public), is the held-out genome, as usual in variant-calling
 benchmarks. 60 and 90 Gb of HiFi reads, the same commands as for HG002 ([Reproduce](reproduce.md)); pbalign
-4e722c5, pbdv on the RTX PRO 6000 ([Method](method.md)). The truth is GIAB v4.2.1 (the noinconsistent BED, chr1–22): T2T-Q100 has no truth for HG003, and GIAB has no SV truth for
+beab3d9, pbdv on the RTX PRO 6000 ([Method](method.md)). The truth is GIAB v4.2.1 (the noinconsistent BED, chr1–22): T2T-Q100 has no truth for HG003, and GIAB has no SV truth for
 it.
 
 ### Small variants, GIAB v4.2.1

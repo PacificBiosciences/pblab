@@ -47,7 +47,7 @@ The contigs on GRCh38: [pbalign, Contig Alignment](pbalign.md#contig-alignment).
 The read sets: [Reproduce](reproduce.md), sections 1 and 4.
 
 ```bash
-pbhifiasm asm -j 256 -o hg002.60G hg002.60G.reads.bam     # writes hg002.60G.bp.hap{1,2}.p_ctg.gfa
+pbhifiasm -j 256 -o hg002.60G hg002.60G.reads.bam         # writes hg002.60G.bp.hap{1,2}.p_ctg.gfa
 for h in hap1 hap2; do                                    # the contigs of each haplotype as FASTA
     awk -F'\t' '$1 == "S" {print ">"$2; print $3}' hg002.60G.bp.$h.p_ctg.gfa > hg002.60G.$h.fa
 done

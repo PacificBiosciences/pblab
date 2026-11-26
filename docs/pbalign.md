@@ -61,7 +61,7 @@ Commands for this data set: [Reproduce](reproduce.md).
 
 ## Other genomes
 
-Seven more species, from a 0.5 Gb insect genome to the 94 Gb mistletoe genome, with two hexaploid plants, and a human tumor/normal pair. Unsorted BAM, default options, pbalign ed11c12 (the version before 4e722c5). The colo829 index is the GRCh38 index above. One AMD EPYC 9755 CPU, 128 cores + SMT, `-j 256`; one warmup run per data set, then one run ([Method](method.md)).
+Seven more species, from a 0.5 Gb insect genome to the 94 Gb mistletoe genome, with two hexaploid plants, and a human tumor/normal pair. Unsorted BAM, default options, pbalign ed11c12 (the version before beab3d9). The colo829 index is the GRCh38 index above. One AMD EPYC 9755 CPU, 128 cores + SMT, `-j 256`; one warmup run per data set, then one run ([Method](method.md)).
 
 | Set       | Reads  | Genome  | Index | Index memory | Align        | CPU time | Align memory |
 | --------- | ------ | ------- | ----- | ------------ | ------------ | -------- | ------------ |
@@ -97,7 +97,7 @@ pbalign align -j 256 ref.pai reads.fofn aligned.bam  # reads.fofn: the BAM or FA
 ## Human genome
 
 The contigs of [pbhifiasm](pbhifiasm.md) of the same HG002 read sets (each haplotype one FASTA) aligned to GRCh38 with
-`--preset CONTIG`, pbalign 4e722c5.
+`--preset CONTIG`, pbalign beab3d9.
 
 | Read set | Haplotype | Contigs | Length  | N50     |
 | -------- | --------- | ------- | ------- | ------- |
@@ -163,7 +163,7 @@ pbalign align -j 256 --preset CONTIG --sort GRCh38.contig.pai hap1.fa hap1.bam  
 
 The reads aligned to GRCh38 and to the sample's own contigs (hap1 + hap2) in one pass: a read that the guards allow
 takes its place on the reference through its contig, the others keep their GRCh38 record. The input of the contigs
-is the sorted contig BAMs of [Contig Alignment](#contig-alignment); every read is in the output. pbalign 4e722c5.
+is the sorted contig BAMs of [Contig Alignment](#contig-alignment); every read is in the output. pbalign beab3d9.
 
 ## Human genome
 

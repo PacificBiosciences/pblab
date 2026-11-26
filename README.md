@@ -98,11 +98,11 @@ precision, FN and FP: [Accuracy](docs/accuracy.md).
 
 ## Downloads
 
-Release [20261126](https://github.com/PacificBiosciences/pblab/releases/tag/20261126): pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari, pbsamoa and pbphase 26.3.99 for Linux x86-64, the builds that made the numbers of these pages ([Method](docs/method.md#versions)). pbcall is experimental and not part of it. glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver.
+Release [20261126](https://github.com/PacificBiosciences/pblab/releases/tag/20261126): pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari and pbsamoa 26.3.99 for Linux x86-64, the builds that made the numbers of these pages ([Method](docs/method.md#versions)). pbcall is experimental and not part of it. glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver.
 
 ```bash
 curl -LO https://github.com/PacificBiosciences/pblab/releases/download/20261126/pblab-20261126-linux-x86_64.tar.xz
-echo "1ec550be3ee43d71233dddd33b66b692af9fd3dd5be91d09ba7603bb21280f56  pblab-20261126-linux-x86_64.tar.xz" | sha256sum -c
+echo "92cee909152146f88acf3c8bf229c8f4935e409d59313d11e350108441c3e3a4  pblab-20261126-linux-x86_64.tar.xz" | sha256sum -c
 tar -xJf pblab-20261126-linux-x86_64.tar.xz
 export PATH=$PWD/pblab-20261126-linux-x86_64/bin:$PATH
 pbalign --version
@@ -110,8 +110,12 @@ pbalign --version
 
 | File                                 | SHA-256                                                            |
 | ------------------------------------ | ------------------------------------------------------------------ |
-| `pblab-20261126-linux-x86_64.tar.xz` | `1ec550be3ee43d71233dddd33b66b692af9fd3dd5be91d09ba7603bb21280f56` |
+| `pblab-20261126-linux-x86_64.tar.xz` | `92cee909152146f88acf3c8bf229c8f4935e409d59313d11e350108441c3e3a4` |
 
-Inside: `bin/`, `SHA256SUMS` of the binaries, `README.md` with the commits, `LICENSE.md`. License of the binaries: the Pacific Biosciences Software License Agreement (`LICENSE.md` in the archive).
+Inside: `bin/`, `SHA256SUMS` of the binaries and `README.md` with the commits.
 
 Earlier: release [20261021](https://github.com/PacificBiosciences/pblab/releases/tag/20261021) (pbweave, pbdv, pbhappy, pbtruvari, pbsamoa; BSD-3-Clause-Clear), older builds than those of these pages.
+
+---
+
+For Research Use Only. Not for use in diagnostic procedures.
