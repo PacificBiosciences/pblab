@@ -11,7 +11,7 @@
      '--> HiFi => assemble => align => call => score
 ```
 
-Fast tools for HiFi data analysis, tuned to work together: pbalign aligns, pbhifiasm assembles, pbdv calls small variants, pbhappy and pbtruvari score calls against truth sets; pbcall (experimental, not in the release yet) calls SNVs, indels and SVs. The human numbers are for HG002 (PacBio Revio, SPRQ-Nx chemistry, public), 60 and 90 Gb of HiFi reads, GRCh38; [Accuracy](docs/accuracy.md) adds HG003 as the held-out genome, and [pbalign](docs/pbalign.md#other-genomes) seven more species.
+Fast tools for HiFi data analysis, tuned to work together: pbalign aligns, pbhifiasm assembles, pbdv calls small variants, pbhappy and pbtruvari score calls against truth sets; pbcall (experimental, not part of release 20261126) calls SNVs, indels and SVs. [Download](#downloads) release 20261126. The human numbers are for HG002 (PacBio Revio, SPRQ-Nx chemistry, public), 60 and 90 Gb of HiFi reads, GRCh38; [Accuracy](docs/accuracy.md) adds HG003 as the held-out genome, and [pbalign](docs/pbalign.md#other-genomes) seven more species.
 
 pbhifiasm, pbdv, pbhappy and pbtruvari reimplement hifiasm, DeepVariant, hap.py (with RTG Tools vcfeval) and truvari. pblab is not affiliated with or endorsed by Google, Illumina, Real Time Genomics or the authors of these tools; their names describe what is reimplemented.
 
@@ -94,10 +94,19 @@ precision, FN and FP: [Accuracy](docs/accuracy.md).
 - [Accuracy](docs/accuracy.md): all small-variant and SV results
 - [Reproduce](docs/reproduce.md): every file, version and command, and the checksums to compare with
 - [Method](docs/method.md): hardware, instances, runs
+- [Downloads](#downloads): release 20261126
 
 ## Downloads
 
-Release [20261126](https://github.com/PacificBiosciences/pblab/releases/tag/20261126): pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari, pbsamoa and pbphase 26.3.99 for Linux x86-64, the builds that made the numbers of these pages ([Method](docs/method.md#versions)); not pbcall (experimental). glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver.
+Release [20261126](https://github.com/PacificBiosciences/pblab/releases/tag/20261126): pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari, pbsamoa and pbphase 26.3.99 for Linux x86-64, the builds that made the numbers of these pages ([Method](docs/method.md#versions)). pbcall is experimental and not part of it. glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver.
+
+```bash
+curl -LO https://github.com/PacificBiosciences/pblab/releases/download/20261126/pblab-20261126-linux-x86_64.tar.xz
+echo "1ec550be3ee43d71233dddd33b66b692af9fd3dd5be91d09ba7603bb21280f56  pblab-20261126-linux-x86_64.tar.xz" | sha256sum -c
+tar -xJf pblab-20261126-linux-x86_64.tar.xz
+export PATH=$PWD/pblab-20261126-linux-x86_64/bin:$PATH
+pbalign --version
+```
 
 | File                                 | SHA-256                                                            |
 | ------------------------------------ | ------------------------------------------------------------------ |

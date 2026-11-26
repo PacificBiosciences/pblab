@@ -46,7 +46,7 @@ Measured 2026-11-25 and 2026-11-26. Release [20261126](../README.md#downloads) s
 | pbhappy   | 92cce05 |                                                                                                                    |
 | pbtruvari | 1a4cf4b |                                                                                                                    |
 | pbsamoa   | e0b0f08 |                                                                                                                    |
-| pbcall    | e3f414c | experimental, not in the release; with its panel (221 samples, without HG002, HG003, HG004)                        |
+| pbcall    | e3f414c | experimental, not part of the release; with its panel (221 samples, without HG002, HG003, HG004)                   |
 
 All report version 26.3.99. Other tools: bcftools 1.23, aardvark v1.2.0 ([Reproduce](reproduce.md#3-software)).
 

@@ -1,12 +1,12 @@
 # pbcall
 
-> **Experimental**: pbcall is not in the release yet. These pages show what it does today.
+> **Experimental**: pbcall is not part of release [20261126](../README.md#downloads). This page shows what it does today.
 
 Variant caller for PacBio HiFi: SNVs, indels and structural variants of one sample in one VCF, phased. BAM in
 (sorted, with index), VCF out.
 
 All numbers: HG002 (PacBio Revio, SPRQ-Nx chemistry, public), 60 and 90 Gb of HiFi reads, GRCh38; the input is the
-sorted [pbalign](pbalign.md) BAM, `--haploid-xy` (HG002 is male), with the haplotype panel of the release (221
+sorted [pbalign](pbalign.md) BAM, `--haploid-xy` (HG002 is male), with its haplotype panel (221
 samples; HG002 and its parents are not in it).
 
 ## Fastest

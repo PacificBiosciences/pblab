@@ -200,4 +200,6 @@ pbalign index -j 256 contigs.fa contigs.pai
 pbalign align -j 256 --sort --assembly-index contigs.pai --assembly-bam hap1.bam,hap2.bam GRCh38.pai reads.bam lifted.bam
 ```
 
+Download: release [20261126](../README.md#downloads).
+
 [Back to the overview](../README.md)

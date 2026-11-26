@@ -20,4 +20,6 @@ pbtruvari refine --reference $REF --regions tv/candidate.refine.bed --recount --
 pbtruvari ga4gh --input tv --output tv/ga4gh_with_refine --with-refine -j 64
 ```
 
+Download: release [20261126](../README.md#downloads).
+
 [Back to the overview](../README.md)

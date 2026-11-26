@@ -61,4 +61,6 @@ md5sum hg002.60G.hap1.fa hg002.60G.hap2.fa
 
 The same reads and the same binary give the same contigs: the warmup and the timed run of Fastest, and the run of Cheapest with 64 threads, match.
 
+Download: release [20261126](../README.md#downloads).
+
 [Back to the overview](../README.md)
