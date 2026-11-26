@@ -1,6 +1,6 @@
 # pbcall
 
-> **Experimental**: pbcall is not part of release [20261126](../README.md#downloads). This page shows what it does today.
+> **Experimental**: pbcall is not part of release [20261126b](../README.md#downloads). This page shows what it does today.
 
 Variant caller for PacBio HiFi: SNVs, indels and structural variants of one sample in one VCF, phased. BAM in
 (sorted, with index), VCF out.

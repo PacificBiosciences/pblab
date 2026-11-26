@@ -7,7 +7,7 @@ HG002 (PacBio Revio, SPRQ-Nx chemistry, public), 60 and 90 Gb of HiFi reads, GRC
 - **B**: pbhifiasm → contigs → lift → pbcall
 - **C**: pbalign → pbdv
 
-> **pbcall is experimental**: it is not part of release [20261126](../README.md#downloads). Workflows A and B show what it
+> **pbcall is experimental**: it is not part of release [20261126b](../README.md#downloads). Workflows A and B show what it
 > does today; workflow C uses released tools only.
 
 pbcall ran with `--haploid-xy` and its panel; B with the lifted reads and `--asm-bam` ([pbcall](pbcall.md)). C is the

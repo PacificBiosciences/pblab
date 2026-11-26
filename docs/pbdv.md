@@ -36,6 +36,6 @@ pbdv run --device gpu --gpu-id 0 -j 128 --ref human_GRCh38_no_alt_analysis_set.f
     --output-vcf small.vcf --output-gvcf small.g.vcf aligned.bam
 ```
 
-Download: release [20261126](../README.md#downloads).
+Download: release [20261126b](../README.md#downloads).
 
 [Back to the overview](../README.md)

@@ -20,6 +20,6 @@ pbhappy HG002_GRCh38_1_22_v4.2.1_benchmark.vcf.gz q.vcf.gz --pass-only -r human_
     --stratification v2.0-GRCh38-stratifications.tsv --engine=vcfeval --threads 256 -o v421
 ```
 
-Download: release [20261126](../README.md#downloads).
+Download: release [20261126b](../README.md#downloads).
 
 [Back to the overview](../README.md)
