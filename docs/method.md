@@ -36,7 +36,7 @@
 
 ## Versions
 
-Measured 2026-11-25 and 2026-11-26. The [next release](../README.md#downloads) ships these builds:
+Measured 2026-11-25 and 2026-11-26. Release [20261126](../README.md#downloads) ships these builds:
 
 | Tool      | Commit  | Note                                                                                                               |
 | --------- | ------- | ------------------------------------------------------------------------------------------------------------------ |

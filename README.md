@@ -97,12 +97,12 @@ precision, FN and FP: [Accuracy](docs/accuracy.md).
 
 ## Downloads
 
-**Next release** (in preparation): pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari, pbsamoa and pbphase, the builds that made the numbers of these pages ([Method](docs/method.md#versions)); not pbcall (experimental). Linux x86-64, glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver.
-
-Release [20261021](https://github.com/PacificBiosciences/pblab/releases/tag/20261021): pbalign (as `pbweave`), pbdv, pbhappy, pbtruvari and pbsamoa 26.3.99 for Linux x86-64 (glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver); older builds than those of these pages.
+Release [20261126](https://github.com/PacificBiosciences/pblab/releases/tag/20261126): pbalign, pbhifiasm, pbdv, pbhappy, pbtruvari, pbsamoa and pbphase 26.3.99 for Linux x86-64, the builds that made the numbers of these pages ([Method](docs/method.md#versions)); not pbcall (experimental). glibc 2.17 or newer; pbdv on a GPU needs an NVIDIA driver.
 
 | File                                 | SHA-256                                                            |
 | ------------------------------------ | ------------------------------------------------------------------ |
-| `pblab-20261021-linux-x86_64.tar.xz` | `46cd78f3759a35be9c05d00035244cccda5300ea9df9f5f5ca749d179e9f0737` |
+| `pblab-20261126-linux-x86_64.tar.xz` | `1ec550be3ee43d71233dddd33b66b692af9fd3dd5be91d09ba7603bb21280f56` |
 
-Inside: `bin/`, `SHA256SUMS` of the binaries, `LICENSE`. License: BSD-3-Clause-Clear, [LICENSE](LICENSE).
+Inside: `bin/`, `SHA256SUMS` of the binaries, `README.md` with the commits, `LICENSE.md`. License of the binaries: the Pacific Biosciences Software License Agreement (`LICENSE.md` in the archive).
+
+Earlier: release [20261021](https://github.com/PacificBiosciences/pblab/releases/tag/20261021) (pbweave, pbdv, pbhappy, pbtruvari, pbsamoa; BSD-3-Clause-Clear), older builds than those of these pages.
